@@ -8,12 +8,23 @@ class App extends React.Component {
     super(props);
     this.state = {
       members: [],
-      member: {}
+      member: {},
+      index: 0
     }
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(event) {
+    $.ajax({
+      url: '/add',
+      type: 'POST',
+      dataType: 'json',
+      data: this.state.member,
+      success: (data) => {
+        this.setState({index : this.state.index+1});
+      }
+    }
+    );
 
   }
 
@@ -22,7 +33,7 @@ class App extends React.Component {
     $.get("/docs", (data) => {
       console.log(data);
       data = JSON.parse(data);
-      this.setState({members: data});
+      this.setState({members: data, index : data.length});
     });
 
 
@@ -46,6 +57,7 @@ class App extends React.Component {
 
   render() {
 
+    console.log(this.state);
     return (<div style = {{textAlign: 'center'}}>
       <h1 style ={{textAlign:'center'}}>Bowling League</h1>
       <h2 style ={{textAlign:'center'}}>Member List</h2>
@@ -59,7 +71,6 @@ class App extends React.Component {
               <td>High Score</td>
             </tr>
           {this.state.members.map((val) => {
-            console.log("val ",JSON.stringify(val));
             return (<tr key={val.id}>
               <td style = {{textAlign:'left'}}>
                 {val.name}
