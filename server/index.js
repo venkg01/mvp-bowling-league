@@ -5,6 +5,7 @@ const db = require('../database/index');
 const faker = require('faker');
 
 
+
 app.use(bodyparser.json());
 app.use(express.static(__dirname + '/../client/dist'));
 
@@ -16,13 +17,13 @@ app.get('/docs', (req, res) => {
 });
 
 app.post('/add', (req, res) => {
-  console.log('In post ', req.body);
+
   let val = {};
-  // val.id = i + 1;
+  val.id = req.body.index + 1;
   val.name = faker.name.findName();
   val.highScore = Math.round(Math.random() * 100 + 200);
   val.average = val.highScore - Math.round(Math.random() * 100);
-  // db.save(val, (res) => console.log(res));
+  db.save(val, (res) => console.log(res));
   res.sendStatus(200);
 })
 

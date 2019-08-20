@@ -15,14 +15,13 @@ class App extends React.Component {
   }
 
   handleClick(event) {
+
     $.ajax({
       url: '/add',
-      type: 'POST',
-      dataType: 'json',
-      data: this.state.member,
-      success: (data) => {
-        this.setState({index : this.state.index+1});
-      }
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({"index" : this.state.index}),
+      success: this.componentDidMount.bind(this)
     }
     );
 
